@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Mini-guide Les plus belles plages de Thaïlande | Thaï Malin</title>
 <style>
-  :root{--nuit:#0b1f5c;--nuit2:#13307f;--or:#f2b632;--or2:#ffd96b;--creme:#fff8e6;--bar:56px}
+  :root{--nuit:#0b1f5c;--nuit2:#13307f;--or:#f2b632;--or2:#ffd96b;--creme:#fff8e6;--bar:84px}
   *{box-sizing:border-box}
   html,body{margin:0;background:#06123a;color:#fff;font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-text-size-adjust:100%}
   body.locked #reader,body.locked #bar{display:none}
@@ -35,22 +35,49 @@
 
   /* ===== Lecteur ===== */
   #reader{padding-bottom:calc(var(--bar) + 20px)}
-  .pg{position:relative;width:min(100vw,760px);margin:0 auto 10px;aspect-ratio:1024/1536;container-type:inline-size;background:#0b1f5c;scroll-margin-top:0}
+  .pg.cur{display:block}.pg.mp.cur{display:flex}
+  #pnav{display:flex;gap:10px;width:min(100vw,760px);margin:12px auto 0;padding:0 12px}
+  #pnav button{flex:1;min-height:52px;border:2px solid var(--or);border-radius:14px;background:rgba(11,31,92,.9);color:#fff;font:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:6px 10px;line-height:1.2}
+  #pnav button small{display:block;font-weight:400;color:var(--or2);font-size:12px}
+  #pnav button[hidden]{display:none}
+  .pg{display:none;position:relative;width:min(100vw,760px);margin:0 auto;aspect-ratio:1024/1536;container-type:inline-size;background:#0b1f5c;scroll-margin-top:0}
   .pg img{display:block;width:100%;height:100%;cursor:zoom-in}
   .pg a.hot{position:absolute;display:block;border-radius:999px}
   .pg a.hot:focus-visible,.pg button.hot:focus-visible{outline:3px solid var(--or2)}
   .pg button.hot{position:absolute;display:block;border:0;background:transparent;cursor:pointer;border-radius:12px;padding:0}
 
   /* ===== Barre ===== */
-  #bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar);background:rgba(6,18,58,.96);backdrop-filter:blur(8px);border-top:2px solid var(--or);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;z-index:20}
-  #bar button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;font-weight:700;min-width:48px;min-height:48px;border-radius:12px;cursor:pointer;font-size:15px}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar);background:rgba(6,18,58,.97);backdrop-filter:blur(8px);border-top:2px solid var(--or);display:flex;flex-direction:column;z-index:20;padding-bottom:env(safe-area-inset-bottom)}
+  #bar .prog{height:3px;background:rgba(255,255,255,.15)}#bar .prog i{display:block;height:100%;width:0;background:var(--or2);transition:width .25s}
+  #bar .ttl{text-align:center;font-size:12.5px;color:var(--or2);padding:5px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #bar .btns{flex:1;display:flex;align-items:stretch;justify-content:space-between;gap:2px;padding:0 4px 4px}
+  #bar button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;cursor:pointer;border-radius:12px;flex:1;min-width:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  #bar button span{font-size:20px;line-height:1}#bar button small{font-size:10.5px;color:#cfd8ff;font-weight:600}
+  #bar #prev,#bar #next{flex:.7;font-size:30px;font-weight:700;color:var(--or2);line-height:1}
+  #bar #prev[disabled],#bar #next[disabled]{opacity:.25}
+  #bar #fav span{color:var(--or2);font-size:22px}
+  #bar .som{background:linear-gradient(#ffe08a,var(--or));color:#3a2600}#bar .som small{color:#3a2600}
   #bar button:focus-visible{outline:3px solid var(--or2)}
-  #bar .cnt{flex:1;min-width:0;max-width:210px;text-align:center;font-size:13px;color:var(--or2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  #bar #fav{font-size:24px;color:var(--or2)}
   .toc h3{margin:12px 0 4px;font-size:14px;color:#44507a;text-transform:uppercase;letter-spacing:.06em}
   .toc li.sep{list-style:none}
-  #bar .som{background:linear-gradient(#ffe08a,var(--or));color:#3a2600;padding:0 16px;margin-right:6px}
 
+  /* ===== Impression / PDF ===== */
+  @page{size:A4;margin:0}
+  @media print{
+    html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    #bar,#pnav,dialog,#gate,.gate{display:none!important}
+    #reader{padding:0!important}
+    .pg{display:block!important;width:198mm!important;height:297mm!important;margin:0 auto!important;break-after:page;page-break-after:always;overflow:hidden}
+    .pg img{width:100%!important;height:100%!important;cursor:default}
+    .pg.mp{display:flex!important;height:297mm!important}
+    .pg.mp .mbody{padding:6px 10px;margin:0 4px}
+    .pg.mp img.dec{width:100%!important;height:auto!important}
+    .pg.mp .mgrid{gap:6px;grid-template-columns:repeat(3,1fr)}
+    .pg.mp #mref{display:none}
+    .pg.mp .mc .fc,.pg.mp .mc ul{font-size:11px}
+    .pg.mp .mc{padding:8px 8px 6px}
+    .mc::before,.mc::after{display:block}
+  }
   /* ===== Fenêtres ===== */
   dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;color:var(--nuit)}
   dialog::backdrop{background:rgba(3,10,40,.85);backdrop-filter:blur(4px)}
@@ -89,7 +116,7 @@
 
 
   /* ===== Météo en direct ===== */
-  .pg.mp{aspect-ratio:auto;container-type:normal;background:#001c49;display:flex;flex-direction:column}
+  .pg.mp{aspect-ratio:auto;container-type:normal;background:#001c49;flex-direction:column}
   .pg.mp .dec{width:100%;height:auto;cursor:default;display:block}
   .pg.mp .fallback{padding:18px 14px 6px;text-align:center;border-bottom:3px solid var(--or)}
   .pg.mp .fallback .brand{font-size:30px;font-weight:800;letter-spacing:.06em}.pg.mp .fallback .brand b{color:var(--or2)}
@@ -123,13 +150,15 @@
   .mc .fc{border-top-color:rgba(255,255,255,.35)}
   .mc.m-clair{--g:linear-gradient(#1e90ff,#38c6e8)}.mc.m-nuageux{--g:linear-gradient(#6f8fb3,#a9bdd1)}.mc.m-pluie{--g:linear-gradient(#4a5a70,#6e7f93)}
   .mc.m-orage{--g:linear-gradient(#2b2f45,#55506b)}.mc.m-aube{--g:linear-gradient(#f4a259,#e8788f)}.mc.m-couchant{--g:linear-gradient(#e8833a,#7a3f8f)}.mc.m-nuit{--g:linear-gradient(#050d2e,#1a2a62)}
+  .inst{margin:10px 0 4px;text-align:center}.inst .btn{width:100%}.inst .sub{margin:8px 0 0}
+  #offl{font-size:12.5px;margin:8px 0 0;text-align:center}
   .mnote{margin:12px 2px 0;font-size:12px;color:#cfd8ff;line-height:1.4}
   .mstate{padding:18px 6px;text-align:center;color:#cfd8ff;font-size:14px;grid-column:1/-1}
 
   /* Zoom */
   #zoom{background:#000}
   #zoom .scroller{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch}
-  #zoom img{display:block;width:200%;max-width:none;height:auto}
+  #zoom img{display:block;width:230%;max-width:none;height:auto}
   #zoom .x{position:fixed;top:12px;right:12px;z-index:2;width:48px;height:48px;border-radius:50%;border:2px solid var(--or);background:rgba(6,18,58,.9);color:#fff;font-size:22px;cursor:pointer}
   @media (min-width:900px){#zoom img{width:150%}}
   @media (prefers-reduced-motion:reduce){.lock{transition:none}html{scroll-behavior:auto}}
@@ -143,7 +172,7 @@
     <h1>Mini-guide Plages</h1>
     <p>Entre le mot de passe reçu par email après ton achat pour ouvrir le guide.</p>
     <label for="pw" class="sr" style="position:absolute;left:-9999px">Mot de passe</label>
-    <input id="pw" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="PLAGES-MM-AAAA" aria-describedby="err">
+    <input id="pw" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Mot de passe" aria-describedby="err">
     <div class="err" id="err" role="alert"></div>
     <button class="btn" type="submit">Ouvrir le guide</button>
     <a class="buy" href="https://www.thaimalin.fr/mini-guides" rel="noopener">Pas encore le guide ? Découvrir les mini-guides</a>
@@ -154,15 +183,26 @@
 <div id="reader" aria-label="Mini-guide Les plus belles plages de Thaïlande"></div>
 
 <nav id="bar" aria-label="Navigation du guide">
-  <button class="som" id="btnToc" aria-haspopup="dialog">☰ Sommaire</button>
-  <button id="prev" aria-label="Page précédente">‹</button>
-  <span class="cnt" id="cnt" aria-live="polite"></span>
-  <button id="next" aria-label="Page suivante">›</button>
-  <button id="fav" aria-label="Ajouter cette page aux favoris" aria-pressed="false">☆</button>
+  <div class="prog"><i id="progI"></i></div>
+  <div class="ttl" id="cnt" aria-live="polite"></div>
+  <div class="btns">
+    <button id="prev" aria-label="Page précédente">‹</button>
+    <button id="btnHome" aria-label="Aller à la couverture"><span>🏠</span><small>Accueil</small></button>
+    <button class="som" id="btnToc" aria-haspopup="dialog"><span>☰</span><small>Sommaire</small></button>
+    <button id="btnMeteo" aria-label="Météo en direct"><span>⛅</span><small>Météo</small></button>
+    <button id="fav" aria-label="Ajouter cette page aux favoris" aria-pressed="false"><span>☆</span><small>Favori</small></button>
+    <button id="next" aria-label="Page suivante">›</button>
+  </div>
 </nav>
 
 <dialog id="dToc" aria-labelledby="tTitle"><div class="card">
-  <h2 id="tTitle">Sommaire</h2><ul class="toc" id="toc"></ul>
+  <h2 id="tTitle">Sommaire</h2>
+  <div class="inst"><button class="btn" id="btnPrint" type="button">🖨️ Imprimer / PDF</button></div>
+  <div id="inst" class="inst" hidden>
+    <button class="btn" id="btnInstall" type="button">📲 Installer l'appli</button>
+    <p class="sub" id="instHelp" hidden></p>
+  </div><ul class="toc" id="toc"></ul>
+  <p class="sub" id="offl">Mode hors ligne : disponible une fois le guide ouvert en ligne une première fois.</p>
   <div class="row"><span></span><button class="link" data-close>Fermer</button></div>
 </div></dialog>
 
@@ -280,7 +320,7 @@ function build(){
     const img=document.createElement("img");
     img.src=`pages/p${pad(n)}.webp`;img.alt=`Page ${n} : ${t}`;img.width=1024;img.height=1536;
     if(n>2)img.loading="lazy";
-    img.addEventListener("click",()=>zoomOn(img.src,img.alt));
+    img.addEventListener("click",e=>{const r=img.getBoundingClientRect();zoomOn(img.src,img.alt,(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height)});
     s.appendChild(img);
     (LINKS[n]||[]).forEach(([x1,y1,x2,y2,href,label])=>{
       let a;
@@ -293,10 +333,13 @@ function build(){
     if(n===21)quizPage(s);
     R.appendChild(s);
   });
-  observe();
+  const pn=document.createElement("div");pn.id="pnav";pn.innerHTML='<button type="button"></button><button type="button"></button>';
+  pn.children[0].addEventListener("click",()=>go(cur-1));pn.children[1].addEventListener("click",()=>go(cur+1));R.appendChild(pn);
   const h=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1]);
-  if(h>=1&&h<=PAGES.length)setTimeout(()=>go(h,false),50);
-  else{const last=parseInt((()=>{try{return localStorage.getItem(KEY+"-page")}catch(e){return 1}})());if(last>1&&last<=PAGES.length)setTimeout(()=>go(last,false),50)}
+  let start=1;
+  if(h>=1&&h<=PAGES.length)start=h;
+  else{const last=parseInt((()=>{try{return localStorage.getItem(KEY+"-page")}catch(e){return 1}})());if(last>1&&last<=PAGES.length)start=last}
+  go(start);
 }
 
 /* ---- Page quiz ---- */
@@ -339,15 +382,26 @@ $("#go").addEventListener("click",()=>$("#dQuiz").close());
 
 /* ---- Navigation ---- */
 let cur=1;
-function go(n,smooth=true){n=Math.max(1,Math.min(PAGES.length,n));const el=document.getElementById("p"+n);if(el)el.scrollIntoView({behavior:smooth?"smooth":"auto",block:"start"})}
-function observe(){
-  const io=new IntersectionObserver(es=>{
-    es.forEach(e=>{if(e.isIntersecting){cur=+e.target.dataset.n;setCur();try{localStorage.setItem(KEY+"-page",cur)}catch(_){}history.replaceState(null,"","#p"+cur)}});
-  },{rootMargin:"-50% 0px -49% 0px",threshold:0});
-  document.querySelectorAll(".pg").forEach(p=>io.observe(p));
+function go(n){
+  n=Math.max(1,Math.min(PAGES.length,n));
+  document.querySelectorAll(".pg.cur").forEach(p=>p.classList.remove("cur"));
+  const el=document.getElementById("p"+n);if(!el)return;
+  el.classList.add("cur");cur=n;setCur();window.scrollTo(0,0);
+  try{localStorage.setItem(KEY+"-page",cur)}catch(_){}
+  try{history.replaceState(null,"","#p"+cur)}catch(_){}
+  [n+1,n-1].forEach(k=>{if(k>=1&&k<=PAGES.length&&k!==17){const i=new Image();i.src=`pages/p${pad(k)}.webp`}});
 }
+let tx=0,ty=0,tt=0;
+document.addEventListener("touchstart",e=>{if(e.touches.length!==1)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;tt=Date.now()},{passive:true});
+document.addEventListener("touchend",e=>{
+  if(document.body.classList.contains("locked")||document.querySelector("dialog[open]")||!e.changedTouches.length)return;
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Date.now()-tt<700&&Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.8)go(cur+(dx<0?1:-1));
+},{passive:true});
 $("#prev").addEventListener("click",()=>go(cur-1));
 $("#next").addEventListener("click",()=>go(cur+1));
+$("#btnHome").addEventListener("click",()=>go(1));
+$("#btnMeteo").addEventListener("click",()=>go(17));
 document.addEventListener("keydown",e=>{if(document.querySelector("dialog[open]")||document.body.classList.contains("locked"))return;if(e.key==="ArrowRight"||e.key==="PageDown")go(cur+1);if(e.key==="ArrowLeft"||e.key==="PageUp")go(cur-1)});
 
 /* ---- Sommaire / fenêtres / zoom ---- */
@@ -357,26 +411,43 @@ const favs=()=>{try{return JSON.parse(localStorage.getItem(FAVKEY)||"[]")}catch(
 const saveFavs=a=>{try{localStorage.setItem(FAVKEY,JSON.stringify(a))}catch(e){}};
 function setCur(){
   $("#cnt").textContent=PAGES[cur-1];
-  const on=favs().includes(cur);$("#fav").textContent=on?"★":"☆";$("#fav").setAttribute("aria-pressed",on);
+  $("#progI").style.width=(cur/PAGES.length*100)+"%";
+  $("#prev").disabled=cur<=1;$("#next").disabled=cur>=PAGES.length;
+  const pn=$("#pnav");if(pn){const p=pn.children[0],n=pn.children[1];p.hidden=cur<=1;n.hidden=cur>=PAGES.length;if(cur>1)p.innerHTML="‹ Précédent<small>"+PAGES[cur-2]+"</small>";if(cur<PAGES.length)n.innerHTML="Suivant ›<small>"+PAGES[cur]+"</small>"}
+  const on=favs().includes(cur);$("#fav span").textContent=on?"★":"☆";$("#fav").setAttribute("aria-pressed",on);
   $("#fav").setAttribute("aria-label",on?"Retirer cette page des favoris":"Ajouter cette page aux favoris");
 }
 $("#fav").addEventListener("click",()=>{let a=favs();a=a.includes(cur)?a.filter(x=>x!==cur):[...a,cur];saveFavs(a);setCur()});
 
 /* Sommaire par titres + favoris */
 const toc=$("#toc");
-function item(i,star){const li=document.createElement("li"),b=document.createElement("button");b.innerHTML=`<b></b><span></span>${star?'<i class="star" style="font-style:normal">★</i>':""}`;b.querySelector("span").textContent=PAGES[i];b.addEventListener("click",()=>{$("#dToc").close();go(i+1,false)});li.appendChild(b);return li}
+function item(i,star){const li=document.createElement("li"),b=document.createElement("button");b.innerHTML=`<b></b><span></span>${star?'<i class="star" style="font-style:normal">★</i>':""}`;b.querySelector("span").textContent=PAGES[i];b.addEventListener("click",()=>{$("#dToc").close();go(i+1)});li.appendChild(b);return li}
 function buildToc(){
   toc.innerHTML="";const f=favs().sort((a,b)=>a-b);
   if(f.length){const h=document.createElement("li");h.className="sep";h.innerHTML="<h3>Mes favoris</h3>";toc.appendChild(h);f.forEach(n=>toc.appendChild(item(n-1,true)));const h2=document.createElement("li");h2.className="sep";h2.innerHTML="<h3>Toutes les pages</h3>";toc.appendChild(h2)}
   PAGES.forEach((_,i)=>{toc.appendChild(item(i,f.includes(i+1)));});
 }
+/* ---- Impression / PDF ---- */
+$("#btnPrint").addEventListener("click",async()=>{
+  $("#dToc").close();
+  const imgs=[...document.querySelectorAll(".pg img")];
+  imgs.forEach(i=>{i.loading="eager"});
+  try{await Promise.race([loadMeteo(),new Promise(r=>setTimeout(r,8000))])}catch(e){}
+  await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.addEventListener("load",r,{once:true});i.addEventListener("error",r,{once:true})})));
+  setTimeout(()=>window.print(),150);
+});
 $("#btnToc").addEventListener("click",()=>{buildToc();$("#dToc").showModal()});
 setCur();
 document.querySelectorAll("dialog").forEach(d=>{
   d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-close]"))d.close()});
 });
 $("#cb").href=CR+"hotels-booking-thailande";$("#ca").href=CR+"hotels-agoda";
-function zoomOn(src,alt){const z=$("#zoom");z.querySelector("img").src=src;z.querySelector("img").alt=alt;z.showModal();z.querySelector(".scroller").scrollTo(0,0)}
+function zoomOn(src,alt,fx=.5,fy=0){
+  const z=$("#zoom"),im=z.querySelector("img"),sc=z.querySelector(".scroller");
+  im.src=src;im.alt=alt;z.showModal();
+  const go_=()=>{const w=im.offsetWidth,h=im.offsetHeight;sc.scrollTo(Math.max(0,fx*w-sc.clientWidth/2),Math.max(0,fy*h-sc.clientHeight/2))};
+  go_();im.complete?requestAnimationFrame(go_):im.addEventListener("load",go_,{once:true});
+}
 
 
 /* ---- Météo en direct (Open-Meteo) ---- */
@@ -454,6 +525,21 @@ function meteoInit(s){
 }
 
 /* ---- Appli installable (PWA) ---- */
+(()=>{
+  const inst=$("#inst"),b=$("#btnInstall"),help=$("#instHelp"),off=$("#offl");
+  let dp=null;
+  const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(standalone){off.textContent="✓ Appli installée · fonctionne hors ligne";}
+  else if(ios){inst.hidden=false;b.textContent="📲 Installer sur iPhone / iPad";b.addEventListener("click",()=>{help.hidden=false;help.innerHTML="Appuie sur <b>Partager</b> (le carré avec la flèche), puis <b>Sur l’écran d’accueil</b>."})}
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;if(!standalone)inst.hidden=false});
+  b.addEventListener("click",async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;inst.hidden=true});
+  window.addEventListener("appinstalled",()=>{inst.hidden=true;off.textContent="✓ Appli installée · fonctionne hors ligne"});
+  if("serviceWorker" in navigator&&!standalone)navigator.serviceWorker.ready.then(()=>{off.textContent="✓ Disponible hors ligne"}).catch(()=>{});
+  if(!b.hidden&&!ios&&!dp&&!standalone){/* bouton affiché seulement quand le navigateur propose l'installation */}
+  const upd=()=>{if(!navigator.onLine&&!standalone)off.textContent="📴 Tu es hors ligne : le guide reste disponible"};
+  addEventListener("offline",upd);
+})();
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
 
 /* ---- Démarrage ---- */
