@@ -51,8 +51,8 @@
   #bar .prog{height:3px;background:rgba(255,255,255,.15)}#bar .prog i{display:block;height:100%;width:0;background:var(--or2);transition:width .25s}
   #bar .ttl{text-align:center;font-size:12.5px;color:var(--or2);padding:5px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   #bar .btns{flex:1;display:flex;align-items:stretch;justify-content:space-between;gap:2px;padding:0 4px 4px}
-  #bar button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;cursor:pointer;border-radius:12px;flex:1;min-width:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-  #bar button span{font-size:20px;line-height:1}#bar button small{font-size:10.5px;color:#cfd8ff;font-weight:600}
+  #bar button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;cursor:pointer;border-radius:12px;flex:1;min-width:36px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  #bar button span{font-size:19px;line-height:1}#bar button small{font-size:9.5px;color:#cfd8ff;font-weight:600}
   #bar #prev,#bar #next{flex:.7;font-size:30px;font-weight:700;color:var(--or2);line-height:1}
   #bar #prev[disabled],#bar #next[disabled]{opacity:.25}
   #bar #fav span{color:var(--or2);font-size:22px}
@@ -192,6 +192,8 @@
     <button id="btnHome" aria-label="Aller à la couverture"><span>🏠</span><small>Accueil</small></button>
     <button class="som" id="btnToc" aria-haspopup="dialog"><span>☰</span><small>Sommaire</small></button>
     <button id="btnMeteo" aria-label="Météo en direct"><span>⛅</span><small>Météo</small></button>
+    <button id="btnResa" aria-label="Mon centre de réservation"><span>🧳</span><small>Réserver</small></button>
+    <button id="btnPdf" aria-label="Imprimer ou enregistrer en PDF"><span>🖨️</span><small>PDF</small></button>
     <button id="fav" aria-label="Ajouter cette page aux favoris" aria-pressed="false"><span>☆</span><small>Favori</small></button>
     <button id="next" aria-label="Page suivante">›</button>
   </div>
@@ -405,6 +407,8 @@ $("#prev").addEventListener("click",()=>go(cur-1));
 $("#next").addEventListener("click",()=>go(cur+1));
 $("#btnHome").addEventListener("click",()=>go(1));
 $("#btnMeteo").addEventListener("click",()=>go(17));
+$("#btnResa").addEventListener("click",()=>go(22));
+$("#btnPdf").addEventListener("click",()=>$("#btnPrint").click());
 document.addEventListener("keydown",e=>{if(document.querySelector("dialog[open]")||document.body.classList.contains("locked"))return;if(e.key==="ArrowRight"||e.key==="PageDown")go(cur+1);if(e.key==="ArrowLeft"||e.key==="PageUp")go(cur-1)});
 
 /* ---- Sommaire / fenêtres / zoom ---- */
